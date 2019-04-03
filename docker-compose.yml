@@ -1,0 +1,74 @@
+version: '3'
+services:
+
+  gateway_api:
+    image: joaopio/web-api-gateway
+    ports:
+      - 3000:80
+    depends_on:
+      - gateway_db
+    environment:
+      - DB_SERVER=gateway_db
+      - SERVICES=movie,http://movie_api;user,http://user_api
+    networks:
+      - social_network
+      - gateway_network
+  gateway_db:
+    image: redis
+    networks:
+      - gateway_network
+
+  movie_api:
+    image: joaopio/movie-api
+    depends_on:
+      - movie_db
+    environment:
+      - DB_SERVER=movie_db
+      - DB_NAME=Movies
+      - DB_USER=movieapi
+      - DB_PASS=movieapi1234
+    networks:
+      - social_network
+      - movie_network
+  movie_db:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=Movies
+      - MYSQL_USER=movieapi
+      - MYSQL_PASSWORD=movieapi1234
+    networks:
+      - movie_network
+
+  user_api:
+    image: joaopio/user-api
+    depends_on:
+      - user_db
+    environment:
+      - DB_DOMAIN=user_db
+    networks:
+      - social_network
+      - user_network
+  user_db:
+    image: mongo
+    networks:
+      - user_network
+      
+  front_end:
+    image: joaopio/front-end
+    environment:
+      - API_PORT=80
+      - USER_API_URL=http://neuromancer.minivps.info:3000/user
+      - CONTENT_API_URL=http://neuromancer.minivps.info:4000
+    ports:
+      - 80:80
+    networks:
+      - front_network
+
+networks:
+  social_network:
+  gateway_network:
+  movie_network:
+  user_network:
+  front_network:
