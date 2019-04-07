@@ -6,6 +6,8 @@ services:
       - contentmanagerbff
       - contentapi
       - mysql
+    environment:
+      - BFF_DOMAIN=socialmovie.minivps.info
     networks:
       - contentmanagernetwork
     ports:
