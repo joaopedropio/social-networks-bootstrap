@@ -7,11 +7,11 @@ services:
       - contentapi
       - mysql
     environment:
-      - BFF_DOMAIN=socialmovie.minivps.info
+      - BFF_BASE_ADDRESS=http://socialmovie.minivps.info:5000
     networks:
       - contentmanagernetwork
     ports:
-      - "8088:80"
+      - "8888:80"
 
   contentmanagerbff:
     image: joaopio/content-manager-bff
