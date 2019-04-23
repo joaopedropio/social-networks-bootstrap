@@ -7,13 +7,15 @@ services:
       - contentapi
       - mysql
     environment:
-      - BFF_BASE_ADDRESS=http://socialmovie.minivps.info:5000
-      - AUTHORIZATOR_BASE_ADDRESS=http://socialmovie.minivps.info:3000
-      - CONTENT_SERVER_BASE_ADDRESS=http://socialmovie.minivps.info:4000
+      - BFF_BASE_ADDRESS=https://socialmovie.minivps.info:5000
+      - AUTHORIZATOR_BASE_ADDRESS=https://socialmovie.minivps.info:3000
+      - CONTENT_SERVER_BASE_ADDRESS=https://socialmovie.minivps.info:4000
+    volumes:
+      - /keys:/etc/nginx/keys
     networks:
       - contentmanagernetwork
     ports:
-      - "8888:80"
+      - "443:443"
 
   contentmanagerbff:
     image: joaopio/content-manager-bff
